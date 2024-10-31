@@ -1,0 +1,126 @@
+// Copy this text, paste to https://dbdiagram.io/d
+// Or, https://databasediagram.com/app
+// Or, view in VSCode with extension: "DBML Live Preview"
+
+Project DBML {
+  Note: '''
+Address: Table to store customer address details.
+Customer: Table to store customer information.
+Category: Table to store product categories.
+Contact: Table to store customer contact details.
+CustomerSalesRepAssociation: Association table linking customers to sales representatives.
+SalesRepresentative: information about sales representatives.
+Inventory: Table to store inventory information.
+Product: Table to store product information.
+Order: Table to store order information.
+OrderItem: Junction table for orders and products, storing details of each order line.
+ProductCategoryAssociation: Association table linking products to categories.
+ProductSupplierAssociation: Association table linking products to suppliers.
+Supplier: Table to store supplier information.
+'''
+}
+
+Table Address {
+    id INTEGER [primary key]
+    customer_id INTEGER 
+    line1 VARCHAR 
+    line2 VARCHAR 
+    city VARCHAR 
+    state VARCHAR 
+    zip_code VARCHAR 
+    }
+
+Table Customer {
+    id INTEGER [primary key]
+    name VARCHAR 
+    email VARCHAR 
+    balance FLOAT 
+    credit_limit FLOAT 
+    }
+
+Table Category {
+    id INTEGER [primary key]
+    name VARCHAR 
+    }
+
+Table Contact {
+    id INTEGER [primary key]
+    customer_id INTEGER 
+    phone_number VARCHAR 
+    contact_type VARCHAR 
+    }
+
+Table CustomerSalesRepAssociation {
+    id INTEGER [primary key]
+    customer_id INTEGER 
+    sales_rep_id INTEGER 
+    date_assigned DATETIME 
+    }
+
+Table SalesRepresentative {
+    id INTEGER [primary key]
+    name VARCHAR 
+    email VARCHAR 
+    }
+
+Table Inventory {
+    id INTEGER [primary key]
+    product_id INTEGER 
+    quantity_in_stock INTEGER 
+    }
+
+Table Product {
+    id INTEGER [primary key]
+    name VARCHAR 
+    unit_price FLOAT 
+    }
+
+Table Order {
+    id INTEGER [primary key]
+    customer_id INTEGER 
+    date_ordered DATETIME 
+    amount_total FLOAT 
+    }
+
+Table OrderItem {
+    id INTEGER [primary key]
+    order_id INTEGER 
+    product_id INTEGER 
+    quantity INTEGER 
+    amount FLOAT 
+    unit_price FLOAT 
+    }
+
+Table ProductCategoryAssociation {
+    id INTEGER [primary key]
+    product_id INTEGER 
+    category_id INTEGER 
+    }
+
+Table ProductSupplierAssociation {
+    id INTEGER [primary key]
+    product_id INTEGER 
+    supplier_id INTEGER 
+    }
+
+Table Supplier {
+    id INTEGER [primary key]
+    name VARCHAR 
+    contact_email VARCHAR 
+    }
+
+
+
+// Relationships
+    Ref: Address.(customer_id) < Customer.(id)
+    Ref: Contact.(customer_id) < Customer.(id)
+    Ref: CustomerSalesRepAssociation.(customer_id) < Customer.(id)
+    Ref: CustomerSalesRepAssociation.(sales_rep_id) < SalesRepresentative.(id)
+    Ref: Inventory.(product_id) < Product.(id)
+    Ref: Order.(customer_id) < Customer.(id)
+    Ref: OrderItem.(order_id) < Order.(id)
+    Ref: OrderItem.(product_id) < Product.(id)
+    Ref: ProductCategoryAssociation.(category_id) < Category.(id)
+    Ref: ProductCategoryAssociation.(product_id) < Product.(id)
+    Ref: ProductSupplierAssociation.(product_id) < Product.(id)
+    Ref: ProductSupplierAssociation.(supplier_id) < Supplier.(id)
